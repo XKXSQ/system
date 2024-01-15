@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.system.mapper.UserMapper">
+
+<!--    <resultMap id="User" type="com.system.pojo.User">-->
+<!--        -->
+<!--    </resultMap>-->
+
+    <insert id="createUser" keyProperty="uid" useGeneratedKeys="true">
+        insert into tb_user(uname,password,type)
+        values (#{uname},#{password},#{type})
+    </insert>
+
+    <delete id="deleteUser">
+        delete from tb_user where uid = #{uid}
+    </delete>
+
+    <select id="getAllUser" resultType="com.system.pojo.User" >
+        select * from tb_user
+    </select>
+
+    <update id="updateUser">
+        update tb_user
+        set
+        uname = #{uname},password = #{password}
+        where uid = #{uid}
+    </update>
+
+    <update id="updateUserSelective">
+        update tb_user
+        <set>
+            <if test="uname != null and uname !=''"> uname = #{uname},</if>
+            <if test="password != null and password !=''"> password = #{password}</if>
+        </set>
+        where uid = #{uid}
+    </update>
+
+    <select id="getLoginUser" resultType="com.system.pojo.User">
+        select * from tb_user
+        where
+        uname = #{uname} and password = #{password}
+    </select>
+</mapper>
