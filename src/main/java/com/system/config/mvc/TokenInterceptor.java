@@ -3,6 +3,7 @@ package com.system.config.mvc;
 import com.system.config.exception.TokenException;
 import com.system.config.redis.RedisUtil;
 import com.system.util.Status;
+import com.system.util.UserThreadLocal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -23,6 +24,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         String token  = request.getHeader("token");
         boolean flag = redisUtil.hasKey(token);
         if(flag){
+            UserThreadLocal.set(token);
             redisUtil.expire(token,RedisUtil.EXPR);
         }else{
             throw new TokenException(Status.TOKEN_ERROR.getMsg());
@@ -37,6 +39,6 @@ public class TokenInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-
+        UserThreadLocal.remove();
     }
 }

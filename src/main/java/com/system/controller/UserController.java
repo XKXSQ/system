@@ -2,7 +2,10 @@ package com.system.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.sun.deploy.security.ValidationState;
 import com.system.pojo.User;
+import com.system.role.RequiresRoles;
+import com.system.role.Role;
 import com.system.service.UserService;
 import com.system.util.Page;
 import com.system.util.Result;
@@ -79,6 +82,7 @@ public class UserController {
 
     //获取所有用户信息
     @GetMapping("getAll")
+    @RequiresRoles(type = Role.ADMIN)
     public Result getAllUser(){
         List<User> list = userService.getAllUser();
         if(list!=null){
